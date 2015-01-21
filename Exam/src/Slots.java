@@ -3,11 +3,17 @@ import javax.swing.JOptionPane;
 
 
 public class Slots extends javax.swing.JFrame {
-    SlotMachine s1, s2, s3;
-    int numquart, tries;
+    //tries is amount of turns
+    //x functions to switch out the machines
+    int numquart, tries, x;
+    //an array of objects
+    SlotMachine[] s = new SlotMachine[3];
     
     public Slots() {
         initComponents();
+        int x = 0;
+        int tries = 0;
+        
     }
 
     /**
@@ -47,8 +53,6 @@ public class Slots extends javax.swing.JFrame {
 
         jLabel4.setText("Quarters");
 
-        txtquart.setEditable(false);
-
         btngo.setText("Go");
         btngo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -58,7 +62,6 @@ public class Slots extends javax.swing.JFrame {
 
         jLabel5.setText("Result");
 
-        txtresult.setEditable(false);
         txtresult.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtresultActionPerformed(evt);
@@ -131,26 +134,40 @@ public class Slots extends javax.swing.JFrame {
     }//GEN-LAST:event_txtresultActionPerformed
 
     private void btngoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btngoActionPerformed
-        try{
         
+        try{
+        //gotta cast shit
         int a = Integer.parseInt(txtmac1.getText());
         int b = Integer.parseInt(txtmac2.getText());
         int c = Integer.parseInt(txtmac3.getText());
         numquart = Integer.parseInt(txtquart.getText());
-        s1 = new SlotMachine(10, 20, 10-a);
-        s2 = new SlotMachine(20, 30, 20-b);
-        s3 = new SlotMachine(30, 40, 30-c);
+        //set the slotmachine to their various params
+        //these are subject to change
+        s[0] = new SlotMachine(10, 10, 10 - a);
+        s[1] = new SlotMachine(10, 10, 10 - b);
+        s[2] = new SlotMachine(10, 10, 10 - c);
+        
         }catch(Exception e){
             JOptionPane.showMessageDialog(this, "No good");
             return;
         }
         
         while(true){
+            //removes a quarter
             numquart--;
-            numquart+= s1.pull();
+            //x functions to get next slot machine
+            numquart+= s[x].pull();
             tries++;
-            if (numquart == 0)break;
+            x++;
+            //if runs out of quarters we outta here
+            if(numquart == 0)break;
+            if(x==3)x=0;
         }
+        //prints the text
+        txtresult.setText("" + tries);
+        //resets program
+        tries = 0;
+        x = 0;
     }//GEN-LAST:event_btngoActionPerformed
 
     
